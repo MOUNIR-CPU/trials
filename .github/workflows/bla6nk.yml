@@ -24,8 +24,7 @@ jobs:
 
       - name: Join ZeroTier network
         run: |
-          $env:PATH += ";C:\Program Files\ZeroTier\"
-          zerotier-cli join $ZEROTIER_NETWORK_ID
+          "C:\Program Files\ZeroTier\zerotier-cli.exe" join $ZEROTIER_NETWORK_ID
 
       - name: Enable RDP
         run: |
