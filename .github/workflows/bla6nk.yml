@@ -18,18 +18,12 @@ jobs:
       - name: Install ZeroTier
         run: |
           $url = "https://install.zerotier.com/"
-          Invoke-WebRequest -Uri $url -OutFile zerotier-install.ps1
-          Get-Content zerotier-install.ps1 | Set-Content -NoNewline -Path zerotier-install-updated.ps1
-          .\zerotier-install-updated.ps1
+          Invoke-WebRequest -Uri $url -OutFile zerotier-install.msi
+          Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i", "zerotier-install.msi", "/quiet"
 
       - name: Join ZeroTier network
         run: |
-          $zerotierPath = Get-Command "ZeroTier One.msi" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
-          if (-not $zerotierPath) {
-            Write-Error "zerotier-cli executable not found."
-            exit 1
-          }
-          Start-Process -FilePath $zerotierPath -ArgumentList "join", $env:ZEROTIER_NETWORK_ID -Wait
+          Start-Process -Wait -FilePath "C:\Program Files\ZeroTier\ZeroTier One.exe" -ArgumentList "join", $env:ZEROTIER_NETWORK_ID
 
       - name: Enable RDP
         run: |
