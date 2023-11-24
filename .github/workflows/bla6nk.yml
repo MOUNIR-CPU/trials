@@ -1,4 +1,4 @@
-name: Windows
+name: Windo
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
 
       - name: Install ZeroTier
         run: |
-          Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i", "${{ github.workspace }}\zerotier-install.msi", "/quiet", "/norestart"
+          Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i", "$(System.DefaultWorkingDirectory)\zerotier-install.msi", "/quiet", "/norestart"
 
       - name: Join ZeroTier network
         run: |
