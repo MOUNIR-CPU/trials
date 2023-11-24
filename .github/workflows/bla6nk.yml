@@ -24,7 +24,12 @@ jobs:
 
       - name: Join ZeroTier network
         run: |
-          Start-Process -FilePath "C:\Program Files\ZeroTier\zerotier-cli.exe" -ArgumentList "join", $env:ZEROTIER_NETWORK_ID -Wait
+          $zerotierPath = Get-Command "zerotier-cli" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+          if ($zerotierPath -eq $null) {
+            Write-Error "zerotier-cli executable not found."
+            exit 1
+          }
+          Start-Process -FilePath $zerotierPath -ArgumentList "join", $env:ZEROTIER_NETWORK_ID -Wait
 
       - name: Enable RDP
         run: |
