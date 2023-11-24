@@ -1,4 +1,4 @@
-name: Window
+name: Windows
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       - name: Download ZeroTier One
         run: |
           $url = "https://download.zerotier.com/dist/ZeroTier%20One.msi"
-          $downloadPath = "$env:USERPROFILE\Downloads\zerotier-install.msi"
+          $downloadPath = "$env:USERPROFILE\Downloads\Zerotier One.msi"
           Invoke-WebRequest -Uri $url -OutFile $downloadPath
 
       - name: Install ZeroTier
