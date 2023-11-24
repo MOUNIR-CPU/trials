@@ -17,7 +17,6 @@ jobs:
       - name: Join ZeroTier network
         run: |
           zerotier join 60ee7c034abbf771
-📋'
 
       - name: Enable RDP
         run: |
