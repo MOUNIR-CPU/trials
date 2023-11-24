@@ -1,0 +1,47 @@
+name: Windows RDP
+
+on: [push, workflow_dispatch]
+
+jobs:
+  windows-rdp:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install ZeroTier
+        run: |
+          curl -sSL https://install.zerotier.com/ | powershell.exe
+
+      - name: Join ZeroTier network
+        run: |
+          zerotier join <NETWORK_ID>
+
+      - name: Enable RDP
+        run: |
+          Set-ItemProperty -Path WinRM/Client/Allowunencrypted -Value $true
+          Set-ItemProperty -Path WinRM/Client/creativesession -Value $true
+
+          Add-WindowsFeature -Name Remote-Desktop
+
+      - name: Configure firewall
+        run: |
+          Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+
+      - name: Create RDP user
+        run: |
+          New-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+
+      - name: Get RDP endpoint
+        id: get-rdp-endpoint
+        run: |
+          $endpoint = (zerotier-cli view network | Select-Object -ExpandProperty Members | Where-Object { $_.ID -eq "<NETWORK_ID>" }).Members | Where-Object { $_.Type -eq "ip" } | Select-Object -ExpandProperty Addresses | Select-Object -First 1
+
+          Write-Output "$endpoint"
+
+      - name: Display RDP connection details
+        run: |
+          Write-Output "RDP endpoint: $endpoint"
+          Write-Output "Username: runneradmin"
+          Write-Output "Password: P@ssw0rd!"
