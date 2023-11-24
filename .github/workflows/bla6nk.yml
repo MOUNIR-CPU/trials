@@ -24,7 +24,7 @@ jobs:
 
       - name: Join ZeroTier network
         run: |
-          $zerotierPath = Get-Command "zerotier-cli.exe" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+          $zerotierPath = Get-Command "ZeroTier One.msi" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
           if (-not $zerotierPath) {
             Write-Error "zerotier-cli executable not found."
             exit 1
