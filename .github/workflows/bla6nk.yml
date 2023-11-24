@@ -25,6 +25,10 @@ jobs:
         run: |
           Start-Process -Wait -FilePath "C:\Program Files\ZeroTier\ZeroTier One.exe" -ArgumentList "join", $env:ZEROTIER_NETWORK_ID
 
+      - name: List contents of the directory
+        run: |
+          Get-ChildItem -Path "C:\Program Files\ZeroTier"
+
       - name: Enable RDP
         run: |
           Set-ItemProperty -Path WinRM/Client/Allowunencrypted -Value $true
