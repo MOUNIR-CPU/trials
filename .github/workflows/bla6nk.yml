@@ -16,7 +16,7 @@ jobs:
 
       - name: Join ZeroTier network
         run: |
-          zerotier join <NETWORK_ID>
+          zerotier join '<NETWORK_ID>'
 
       - name: Enable RDP
         run: |
