@@ -19,10 +19,8 @@ jobs:
         run: |
           $url = "https://install.zerotier.com/"
           Invoke-WebRequest -Uri $url -OutFile zerotier-install.ps1
-
-      - name: Execute ZeroTier installation script
-        run: |
-          .\zerotier-install.ps1
+          Get-Content zerotier-install.ps1 | Set-Content -NoNewline -Path zerotier-install-updated.ps1
+          .\zerotier-install-updated.ps1
 
       - name: Join ZeroTier network
         run: |
