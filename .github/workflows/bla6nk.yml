@@ -19,7 +19,7 @@ jobs:
         run: |
           $url = "https://install.zerotier.com/"
           Invoke-WebRequest -Uri $url -OutFile zerotier-install.ps1
-          .\zerotier-install.ps1
+          Get-Content zerotier-install.ps1 | Invoke-Expression
 
       - name: Join ZeroTier network
         run: |
