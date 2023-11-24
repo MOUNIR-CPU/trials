@@ -24,9 +24,9 @@ jobs:
 
       - name: Join ZeroTier network
         run: |
-          $zerotierPath = "C:\Program Files\ZeroTier\zerotier-cli.exe"
-          if (-Not (Test-Path $zerotierPath)) {
-            Write-Error "zerotier-cli executable not found at $zerotierPath."
+          $zerotierPath = Get-Command "zerotier-cli.exe" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+          if (-not $zerotierPath) {
+            Write-Error "zerotier-cli executable not found."
             exit 1
           }
           Start-Process -FilePath $zerotierPath -ArgumentList "join", $env:ZEROTIER_NETWORK_ID -Wait
