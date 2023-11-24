@@ -15,21 +15,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Download ZeroTier One
+        run: |
+          $url = "https://download.zerotier.com/dist/ZeroTier%20One.msi"
+          Invoke-WebRequest -Uri $url -OutFile zerotier-install.msi
+
       - name: Install ZeroTier
         run: |
-          $url = "https://install.zerotier.com/"
-          Invoke-WebRequest -Uri $url -OutFile zerotier-install.ps1
-          Get-Content zerotier-install.ps1 | Set-Content -NoNewline -Path zerotier-install-updated.ps1
-          .\zerotier-install-updated.ps1
+          Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i", "$(System.DefaultWorkingDirectory)\zerotier-install.msi", "/quiet", "/norestart"
 
       - name: Join ZeroTier network
         run: |
-          $zerotierPath = Get-Command "zerotier-cli.exe" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
-          if (-not $zerotierPath) {
-            Write-Error "zerotier-cli executable not found."
-            exit 1
-          }
-          Start-Process -FilePath $zerotierPath -ArgumentList "join", $env:ZEROTIER_NETWORK_ID -Wait
+          Start-Process -Wait -FilePath "C:\Program Files\ZeroTier One\ZeroTier One.exe" -ArgumentList "join", $env:ZEROTIER_NETWORK_ID
+
+      - name: List contents of the directory
+        run: |
+          Get-ChildItem -Path "C:\Program Files\ZeroTier One"
 
       - name: Enable RDP
         run: |
