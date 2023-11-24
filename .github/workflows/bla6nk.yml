@@ -19,15 +19,15 @@ jobs:
         run: |
           $url = "https://install.zerotier.com/"
           Invoke-WebRequest -Uri $url -OutFile zerotier-install.msi
-          Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i", "zerotier-install.msi", "/quiet"
+          Start-Process -Wait -FilePath "msiexec.exe" -ArgumentList "/i", "$(System.DefaultWorkingDirectory)\zerotier-install.msi", "/quiet", "/norestart"
 
       - name: Join ZeroTier network
         run: |
-          Start-Process -Wait -FilePath "C:\Program Files\ZeroTier\ZeroTier One.exe" -ArgumentList "join", $env:ZEROTIER_NETWORK_ID
+          Start-Process -Wait -FilePath "C:\Program Files\ZeroTier One\ZeroTier One.exe" -ArgumentList "join", $env:ZEROTIER_NETWORK_ID
 
       - name: List contents of the directory
         run: |
-          Get-ChildItem -Path "C:\Program Files\ZeroTier"
+          Get-ChildItem -Path "C:\Program Files\ZeroTier One"
 
       - name: Enable RDP
         run: |
